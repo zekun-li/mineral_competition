@@ -81,7 +81,7 @@ def train(args):
 
 
     transform = transforms.Compose([transforms.Resize(32), 
-                                    transforms.RandomAffine(degrees = 0, translate=(0.2, 0.2), scale=(0.8, 1.1)),
+                                    transforms.RandomAffine(degrees = 0, translate=(0.2, 0.2), scale=(0.8, 1.2)),
                                     # transforms.RandomCrop(32),
                                     transforms.ToTensor(), 
                                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
