@@ -54,6 +54,7 @@ class RawImageDataset(Dataset):
             map_dict = self.read_and_process_file(filename, file_path, json_path,label_name, gt_dir)
              
             if map_dict is not None:
+            # if len(map_dict['gt_x_list']) > 0:
                 dataset_dict[filename] = map_dict
 
         print(len(map_list), 'maps available, load %d maps' % len(dataset_dict))
@@ -109,10 +110,10 @@ class RawImageDataset(Dataset):
 
             if typ != 'pt':
                 continue 
-            print(label, label_name)
+            # print(label, label_name)
             if label != label_name: # 
                 # continue 
-                # get strong negative x, y coordinates
+                # get hard negative x, y coordinates
                 # ------------ get neg_tif ----------------
                 neg_tif = os.path.join(gt_dir, filename + '_' + label + '.tif')
 
@@ -125,7 +126,8 @@ class RawImageDataset(Dataset):
                 points = shape['points']
                 if len(points) == 3:
                     print('abnormal point format', img_path, label, points)
-                    continue 
+                    return None
+                    # continue 
 
                 # xy_min, xy_max = points
                 
@@ -138,7 +140,8 @@ class RawImageDataset(Dataset):
 
                 if h == 0 or w == 0:
                     print('invalid template symbol size', img_path, label, points)
-                    continue 
+                    return None
+                    # continue 
 
                 # ------------ get gt_tif ----------------
                 gt_tif = os.path.join(gt_dir, filename + '_' + label + '.tif')
@@ -154,14 +157,13 @@ class RawImageDataset(Dataset):
                 for gt_x, gt_y in zip(gt_x_list, gt_y_list):
                     mask_img[gt_x - int(1.5*h) : gt_x + int(1.5*h), gt_y - int(1.5*w): gt_y + int(1.5*w)] = 0 
 
-                print(foreground_mask.dtype, mask_img.dtype)
+                # print(foreground_mask.dtype, mask_img.dtype)
                 mask_img = np.bitwise_and(foreground_mask, mask_img.astype(bool)) # select patches from foregrond
                 # random_x_list, random_y_list = np.where(mask_img == 1)
-
+        
         del im 
         # del mask_img 
-                
-            
+        
         return {'gt_x_list':gt_x_list, 'gt_y_list':gt_y_list, # 'gt_tif':gt_tif,
                 'template':template, 'label_name':label_name, 'img_path': img_path,  'processed_img':processed_img, 'mask_img':mask_img,
                 'neg_x_list':neg_x_list, 'neg_y_list':neg_y_list, 
@@ -207,7 +209,7 @@ class RawImageDataset(Dataset):
         left = int(tw/2)
         right = tw - left
         
-        if np.random.uniform() < 1/3:
+        if np.random.uniform() < 1/4:
         
             positive_patch = crop_resize(processed_img, cx - up ,cx + down, cy - left, cy + right, self.standard_w, self.standard_h)
 
@@ -230,8 +232,8 @@ class RawImageDataset(Dataset):
             #         negative_patch = crop_resize(processed_img, cx - up  ,cx + down, cy - left + tw, cy + right + tw, standard_w, standard_h)
 
             # negative_patch = np.random.choice([cropped_neg1, cropped_neg2, cropped_neg3, cropped_neg4])
-            if np.random.uniform() < 0.5:
-                # sample from strong negatives (positive for other symbols)
+            if np.random.uniform() < 1/4 and len(map_dict['neg_x_list']) > 0:
+                # sample from hard negatives (positive for other symbols)
                 neg_x_list = map_dict['neg_x_list']
                 neg_y_list = map_dict['neg_y_list']
                 neg_index = np.random.choice(range(0, len(neg_x_list)))

@@ -21,29 +21,13 @@ import torch
 from torchvision import transforms 
 import torch.optim as optim
 
-from models import Net
+from models import Net, Net64
 from datasets import *
 
 import argparse
 
 
 np.random.seed(2333)
-
-circle_cross_path_list = [
-'AK_Ikpikpuk.tif',    
-# 'AK_PointLay.tif',    # no?
-'AR_Buffalo_west.tif',   
-# 'AR_Hasty.tif',   # no?
-# 'AR_Jasper.tif',   # no?
-'AR_Murray_basemap.tif',  
-'AR_OsageSW.tif',  
-'AZ_PioRico_Nogales.tif',   
-'CA_SantaMaria.tif',  
-# 'CA_Weaverville.tif',  # no?
-'CO_PagosaSprings.tif', 
-'OK_Fittstown.tif',  
-]
-
 
 
 
@@ -66,8 +50,7 @@ def train(args):
     gt_dir = args.gt_dir
     label_map_json = args.label_map_json
     label_key_name = args.label_key_name
-
-    # label_name_list = ['horizontal_pt', 'horizbed_pt','horiz_bedding_pt','bedding_horizontal_pt']
+    checkpoint_dir = args.checkpoint_dir
 
     # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     device = 'cpu'
@@ -80,14 +63,14 @@ def train(args):
     # cur_label_name_list = cur_label_name_list[:2]
 
 
-    transform = transforms.Compose([transforms.Resize(32), 
+    transform = transforms.Compose([transforms.Resize(64), 
                                     transforms.RandomAffine(degrees = 0, translate=(0.2, 0.2), scale=(0.8, 1.2)),
                                     # transforms.RandomCrop(32),
                                     transforms.ToTensor(), 
                                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                                     # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
                                 ])
-    transform_val = transforms.Compose([transforms.Resize(32), 
+    transform_val = transforms.Compose([transforms.Resize(64), 
                                     # transforms.RandomAffine(degrees = 0, translate=(0.3, 0.3), scale=(0.7, 1)),
                                     # transforms.RandomCrop(32),
                                     transforms.ToTensor(), 
@@ -101,14 +84,14 @@ def train(args):
     train_loader = DataLoader(train_dataset, batch_size=16, num_workers = 5, shuffle=True) # 284
     val_loader = DataLoader(val_dataset, batch_size = 16, num_workers = 5) # 72
 
-    net = Net()
+    net = Net64()
     net.to(device)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
 
     best_val_loss = 1000
-    for epoch in range(200):  # loop over the dataset multiple times
+    for epoch in range(2000):  # loop over the dataset multiple times
 
         running_loss = 0.0
         for i, data in enumerate(train_loader, 0):
@@ -133,9 +116,9 @@ def train(args):
         print('train_loss', running_loss/len(train_dataset) ,'val_loss', val_loss/len(val_dataset))
         if val_loss < best_val_loss:
             best_val_loss = val_loss
-            torch.save(net.state_dict(), 'checkpoints_v1/model_'+ label_key_name +'_best.pth')
+            torch.save(net.state_dict(), os.path.join(checkpoint_dir, 'model_'+ label_key_name +'_best.pth'))
 
-    torch.save(net.state_dict(), 'checkpoints_v1/model_'+ label_key_name +'_last.pth')
+    torch.save(net.state_dict(), os.path.join(checkpoint_dir, 'model_'+ label_key_name +'_last.pth'))
 
     print('Finished Training')
 
@@ -145,13 +128,18 @@ def main():
     parser.add_argument('--img_json_dir', type=str, default='/data2/mineral_competition/data/train_input')
     parser.add_argument('--gt_dir', type=str, default='/data2/mineral_competition/data/train_output')
     parser.add_argument('--label_map_json', type=str, default='../data/pointsymbols.json')
+    parser.add_argument('--checkpoint_dir', type=str, default = '/data2/mineral_competition/zekun_models/checkpoints_64p/')
     parser.add_argument('--label_key_name', type=str, default=None) # button, plus
 
+    
     
     args = parser.parse_args()
     print('\n')
     print(args)
     print('\n')
+
+    if not os.path.isdir(args.checkpoint_dir):
+        os.makedirs(args.checkpoint_dir)
 
     train(args)
 
