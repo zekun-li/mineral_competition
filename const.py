@@ -1,18 +1,38 @@
 index_list_dict = {
-    'x' : [22,37,46,47,64,58,62,66,69,109,114,121,125,129,132,137,141,145,149,153,158,
-          162,164,],
-    'triangular_matrix': [21,36,44,57,61,65,68,75,108,113,124,128,131,136,140,
-                          144,148,152,157,161,163,],
-                          
-    'quarry_open_pit' : [24,39,60,64,107,111,116,122,127,134,139,143,155,160,166,171,172,
+      'x' : [22,37,45,47,54,58,62,66,69,109,114,121,125,129,132,137,141,145,149,153,158,
+          162,164,],  # new: 17 
+      'triangle' : [28, 185,192], 
+      'triangular_matrix': [21,36,44,57,61,65,68,75,108,113,124,128,131,136,140,
+                          144,148,152,157,161,163,],         # new: 53      
+      'button': [26,35, 48,119,168 ], # 35?
+      'crossed_downward_arrows' : [20,56,123,135,147,151,156,204,207,209,211,], # new 112
+      'dot':[9,31,174,184,191,], # new: 18
+      'barbeque_tofu':[32],
+
+
+
+      'reverse_p_num':[50,73],
+      'small_inclined_fault_num':[19, 27, 30, 42, 49, 120,167, 169, ],
+      'plus':[52], # no so good
+      # 'line_diamond_center_solid':[43],
+
+      'quarry_open_pit' : [24,39,60,64,107,111,116,122,127,134,139,143,155,160,166,171,172,
                         176,206,208,210,212],
-    'crossed_downward_arrows' : [20,56,123,135,147,151,156,204,207,209,211,],
-    'button': [26,35, 48,119,168 ], # 35?
-    'triangle' : [28, 185,192],
-    'dot':[9,31,174,191,],
-    'sleeping_y':[23,38,46,55,59,63,67,110,115,126,130,133,138,142,154,159,
-                 165,205,]
+      'sleeping_y':[23,38,46,55,59,63,67,70, 110,115,126,130,133,138,142,146, 150,154,159,
+                 165,205,], # --------
+    
 }
+
+
+color_indices = [0,1,2,3,4,5,10,25, 33,77,78,79,80,
+                 81,82,83,84,85,86,87,88,89,90,91,92,93,94,
+                 95,96,97,98,99,100,101,102,103,104,105,106,
+                 118,179,180,181,182,183,186,187,188,189,190,
+                ]
+# # change 213 to actual test set size
+# template_matching_indices = list(set([i for i in range(0, XXXXX)]) - set([item for sublist in list(index_list_dict.values()) for item in sublist] + color_indices))
+
+template_matching_indices = sorted(list(set([i for i in range(0, 213)]) - set([item for sublist in list(index_list_dict.values()) for item in sublist] + color_indices) - set([51])))
 
 legend_path_dict = {'button':['AZ_GrandCanyon_label_horiz_bedding_pt.jpeg', # difficult
                               'CO_Alamosa_label_Horizontal_bedding_pt.jpeg',

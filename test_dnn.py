@@ -23,7 +23,7 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from PIL import Image 
 
-from models import Net, Net64
+from models import Net, Net64, Net64_Medium
 from const import *
 
 import argparse
@@ -36,6 +36,7 @@ def write_output(start_h, end_h, start_w, end_w, img, fill_value = 1):
     return img
 
 def write_to_tif(out_file_path, output_tif):
+    print('wrote to',out_file_path)
 
     cv2.imwrite(out_file_path, output_tif)
 
@@ -173,7 +174,11 @@ def main():
         cur_template = cv2.imread(template_path)
         cur_template=cv2.cvtColor(cur_template, cv2.COLOR_BGR2RGB)
 
-        net = Net64()
+        if key == 'sleeping_y':
+            net = Net64_Medium()
+        else:
+            net = Net64()
+            
         net.load_state_dict(torch.load(os.path.join(checkpoint_dir, 'model_'+key+'_best.pth')))
 
 

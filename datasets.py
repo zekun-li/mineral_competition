@@ -36,7 +36,7 @@ def cv_ops(img1):
     return img1
 
 class RawImageDataset(Dataset):
-    def __init__(self, img_json_dir, gt_dir, map_list, label_name_list = None, transform = None):
+    def __init__(self, img_json_dir, gt_dir, map_list, label_name_list = None, transform = None, center_crop_ratio = 1.0):
         # if label_name_list is None:
         #     label_name_list = ['horizontal_pt', 'horizbed_pt','horiz_bedding_pt','bedding_horizontal_pt']
         
@@ -44,6 +44,7 @@ class RawImageDataset(Dataset):
         self.standard_h = 100
         self.label_name_list = label_name_list
         self.transform = transform
+        self.center_crop_ratio = center_crop_ratio
 
         dataset_dict = dict()
         for file_name, label_name in zip(map_list, label_name_list):
@@ -178,6 +179,7 @@ class RawImageDataset(Dataset):
         map_dict = dataset_dict[select_map_name]
         standard_h = self.standard_h
         standard_w = self.standard_w
+        center_crop_ratio = self.center_crop_ratio
 
         gt_x_list = map_dict['gt_x_list']
         gt_y_list = map_dict['gt_y_list']
@@ -197,6 +199,7 @@ class RawImageDataset(Dataset):
 
 
         th, tw = template.shape[0], template.shape[1]
+        th, tw = int(center_crop_ratio *th), int(center_crop_ratio * tw)
 
         
         select_index = np.random.choice(range(0, len(gt_x_list)))

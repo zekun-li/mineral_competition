@@ -132,10 +132,14 @@ def predict(net, template, im,transform_val, standard_h, standard_w):
 
 
 def main():
-    # img_path = '/data2/mineral_competition/data/training/AZ_Fredonia.tif'
-    template_path = '/home/zekun/mineral_competition/data/training_point/AZ_Fredonia_label_collapse_structure_pt.jpeg'
+    # img_path = '/data2/mineral_competition/data/training/AZ_Fredonia.tif' # dot
+    # template_path = '/home/zekun/mineral_competition/data/training_point/AZ_Fredonia_label_collapse_structure_pt.jpeg'
 
-    # img_path = '/data2/mineral_competition/data/training/AZ_Arivaca_314329_1941_62500_geo_mosaic.tif'
+    img_path = '/data2/mineral_competition/data/training/AZ_Fredonia.tif' # triangle
+    template_path = '/home/zekun/mineral_competition/data/training_point/AZ_Fredonia_label_sinkhole_pt.jpeg'
+
+
+    # img_path = '/data2/mineral_competition/data/training/AZ_Arivaca_314329_1941_62500_geo_mosaic.tif' # x
     # template_path = '/home/zekun/mineral_competition/data/training_point/AZ_Arivaca_314329_1941_62500_geo_mosaic_label_3_pt.jpeg'
 
     key = args.key # 'dot' #button, triangle, triangular_matrix, x, crossed_downward_arrow, quarry_open_pit
@@ -153,7 +157,7 @@ def main():
     label_name = os.path.basename(template_path).split('_label_')[1].split('.')[0] 
     img_name = os.path.basename(template_path).split('_label_')[0]
 
-    img_path = os.path.join(args.input_img_dir, img_name + '.tif')
+    # img_path = os.path.join(args.input_img_dir, img_name + '.tif')
 
     out_file_path = os.path.join(args.output_dir, img_name + '_' + label_name + '.tif')
 
@@ -198,7 +202,7 @@ if __name__ == '__main__':
     parser.add_argument('--checkpoint_dir', type=str, default='/data2/mineral_competition/zekun_models/checkpoints_64p/')
     parser.add_argument('--input_symbol_dir', type=str, default = '/home/zekun/mineral_competition/data/validation_point/')
     parser.add_argument('--input_img_dir', type=str, default = '/data2/mineral_competition/data/validation/')
-    parser.add_argument('--output_dir', type=str, default='/data2/mineral_competition/debug/train')
+    parser.add_argument('--output_dir', type=str, default='/data2/mineral_competition/debug')
     
     # parser.add_argument('--label_key_name', type=str, default=None) # button, plus
 

@@ -21,7 +21,7 @@ import torch
 from torchvision import transforms 
 import torch.optim as optim
 
-from models import Net, Net64
+from models import Net, Net64, Net64_Medium
 from datasets import *
 
 import argparse
@@ -63,7 +63,7 @@ def train(args):
     # cur_label_name_list = cur_label_name_list[:2]
 
 
-    transform = transforms.Compose([transforms.RandomAffine(degrees = 30, translate=(0.2, 0.2), scale=(0.8, 1.2)),
+    transform = transforms.Compose([transforms.RandomAffine(degrees = 90, translate=(0.2, 0.2), scale=(0.8, 1.2)),
                                     transforms.Resize(64), 
                                     # transforms.RandomCrop(32),
                                     transforms.ToTensor(), 
@@ -77,18 +77,24 @@ def train(args):
                                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                                     # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
                                 ])
-    dataset = RawImageDataset(img_json_dir, gt_dir, map_list = cur_map_list, label_name_list = cur_label_name_list, transform=transform)
+    dataset = RawImageDataset(img_json_dir, gt_dir, map_list = cur_map_list, label_name_list = cur_label_name_list, transform=transform, center_crop_ratio = args.center_crop_ratio)
     # pdb.set_trace()
 
     train_dataset, val_dataset = torch.utils.data.random_split(dataset, [int(len(dataset) * 0.8), len(dataset) - int(len(dataset) * 0.8) ])
     train_loader = DataLoader(train_dataset, batch_size=16, num_workers = 5, shuffle=True) # 284
     val_loader = DataLoader(val_dataset, batch_size = 16, num_workers = 5) # 72
 
-    net = Net64()
+    if args.model_size == 'small':
+        net = Net64()
+        
+    elif args.model_size == 'medium':
+        net = Net64_Medium()
+    else:
+        raise NotImplementedError
     net.to(device)
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
+    optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9)
 
     best_val_loss = 1000
     for epoch in range(2000):  # loop over the dataset multiple times
@@ -130,13 +136,19 @@ def main():
     parser.add_argument('--label_map_json', type=str, default='../data/pointsymbols.json')
     parser.add_argument('--checkpoint_dir', type=str, default = '/data2/mineral_competition/zekun_models/checkpoints_64p_rot/')
     parser.add_argument('--label_key_name', type=str, default=None) # button, plus
-
+    parser.add_argument('--lr', type=float, default=0.01) # button, plus
+    parser.add_argument('--center_crop_ratio', type=float, default=1.0) 
+    parser.add_argument('--model_size', type=str, choices=['small','medium'], default = 'small')
+    # 0.01
     
     
     args = parser.parse_args()
     print('\n')
     print(args)
     print('\n')
+
+    if args.model_size=='medium':
+        args.checkpoint_dir = args.checkpoint_dir + '/medium/'
 
     if not os.path.isdir(args.checkpoint_dir):
         os.makedirs(args.checkpoint_dir)
