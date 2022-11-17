@@ -22,6 +22,8 @@ standard_h = standard_w = 100
 
 
 
+
+
 def get_files_in_folder(point_folder):
     img_path_list = glob.glob(point_folder + '/*_pt.jpeg')
     img_path_list = sorted(img_path_list)
@@ -48,27 +50,25 @@ def find_foreground1(img):
     return foreground_mask
 
 
+
 def highlight_block(start_h, end_h, start_w, end_w, img, fill_value = 255):
     # ret_img = img.copy()
     img[start_h:end_h, start_w:end_w] = fill_value
     return img
 
-def morph_ops(mask, dilate_kernel = 30):
-    kernel = np.ones((5,5),np.uint8)
+def morph_ops(mask, dilate_kernel = 5):
+    kernel = np.ones((3,3),np.uint8)
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
     
-    kernel = np.ones((dilate_kernel,dilate_kernel),np.uint8)
-    mask = cv2.dilate(mask,kernel,iterations = 1)
-    # mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
-    # mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+#     kernel = np.ones((dilate_kernel,dilate_kernel),np.uint8)
+#     mask = cv2.dilate(mask,kernel,iterations = 1)
+
     return mask
 
 def find_contours(mask):
     ret, thresh = cv2.threshold(mask, 200, 255, 0)
     contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     return contours
-
-
 
 
 val_img_path_list = get_files_in_folder(point_validation_folder)
