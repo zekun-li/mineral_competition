@@ -7,24 +7,24 @@ from matplotlib import pyplot as plt
 import cv2
 from statistics import mode
 from test_dnn import write_output, write_to_tif
-from const import * #template_matching_indices
+from const_test import * #template_matching_indices
 from imutils.object_detection import non_max_suppression
 from utils.ModifiedTM_cc import *
 
 IF_DEBUG = False
 
-point_validation_folder = '/home/zekun/mineral_competition/data/validation_point'
-input_img_dir = '/data2/mineral_competition/data/validation/'
+point_validation_folder = '/data2/mineral_competition/data_test/TestLabels'
+input_img_dir = '/data2/mineral_competition/data_test/eval_data_perfomer'
 if IF_DEBUG:
-    out_dir = '/data2/mineral_competition/zekun_outputs2_visualize/'
+    out_dir = '/data2/mineral_competition/zekun_test/template_visualize'
 else:
-    out_dir = '/data2/mineral_competition/zekun_outputs2/'
+    out_dir = '/data2/mineral_competition/zekun_test/template'
 
 
 
 
 def get_files_in_folder(point_folder):
-    img_path_list = glob.glob(point_folder + '/*.jpeg')
+    img_path_list = glob.glob(point_folder + '/*_pt.jpeg')
     img_path_list = sorted(img_path_list)
     return img_path_list
 
@@ -32,7 +32,7 @@ def read_images(img_path_list):
     img_list = []
     for img_path in img_path_list:
         img = cv2.imread(img_path)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
         img_list.append(img)
         
     return img_list   
@@ -44,7 +44,7 @@ def highlight_block(start_h, end_h, start_w, end_w, img, fill_value = 255):
     return img
 
 
-
+print('template matching indices',template_matching_indices)
 
 val_img_path_list = get_files_in_folder(point_validation_folder)
 val_img_list = read_images(val_img_path_list)
@@ -78,9 +78,9 @@ for idx in template_matching_indices:
         c_w, c_h = coord
 
         if IF_DEBUG:
-            pred_img = highlight_block(c_h-25, c_h+25, c_w-25, c_w+25, pred_img, fill_value = 255)
+            pred_img = highlight_block(c_h, c_h+th, c_w, c_w+tw, pred_img, fill_value = 255)
         else:
-            pred_img = write_output(c_h-25, c_h+25, c_w-25, c_w+25, pred_img, fill_value = 1)
+            pred_img = write_output(c_h, c_h+th, c_w, c_w+tw, pred_img, fill_value = 1)
 
 
     write_to_tif(out_file_path, pred_img)

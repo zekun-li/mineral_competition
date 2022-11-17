@@ -23,8 +23,8 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from PIL import Image 
 
-from models import Net, Net64, Net64_Medium
-from const import *
+from models import Net, Net64, Net64_Medium, Net128
+from const_test import *
 
 import argparse
 
@@ -82,7 +82,7 @@ def highlight_block(start_h, end_h, start_w, end_w, img, fill_value = 255):
     return img
 
 def get_files_in_folder(point_folder):
-    img_path_list = glob.glob(point_folder + '/*.jpeg')
+    img_path_list = glob.glob(point_folder + '/*_pt.jpeg')
     img_path_list = sorted(img_path_list)
     return img_path_list
 
@@ -172,17 +172,20 @@ def main():
 
         # template_path = '../data/validation_point/' + legend_path_dict[key][img_id]
         cur_template = cv2.imread(template_path)
-        cur_template=cv2.cvtColor(cur_template, cv2.COLOR_BGR2RGB)
+        cur_template=cv2.cvtColor(cur_template, cv2.COLOR_BGR2RGB) 
 
-        if key == 'sleeping_y':
-            net = Net64_Medium()
+        if key == 'sleeping_y' or key =='quarry_open_pit' or key == 'small_inclined_fault_num' or key == 'purple_arrow_kite' or key == 'asterix' or key == 'line_diamond_center_solid':
+            # net = Net64_Medium()
+            net = Net128()
+            resize_shape = 128
         else:
             net = Net64()
+            resize_shape = 64
             
         net.load_state_dict(torch.load(os.path.join(checkpoint_dir, 'model_'+key+'_best.pth')))
 
 
-        transform_val = transforms.Compose([transforms.Resize(64), 
+        transform_val = transforms.Compose([transforms.Resize(resize_shape), 
                                         # transforms.RandomAffine(degrees = 0, translate=(0.3, 0.3), scale=(0.7, 1)),
                                         transforms.ToTensor(), 
                                         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
@@ -200,10 +203,10 @@ def main():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--key', type=str, default='dot')
-    parser.add_argument('--checkpoint_dir', type=str, default='/data2/mineral_competition/zekun_models/checkpoints_64p/')
-    parser.add_argument('--input_symbol_dir', type=str, default = '/home/zekun/mineral_competition/data/validation_point/')
-    parser.add_argument('--input_img_dir', type=str, default = '/data2/mineral_competition/data/validation/')
-    parser.add_argument('--output_dir', type=str, default='/data2/mineral_competition/zekun_outputs')
+    parser.add_argument('--checkpoint_dir', type=str, default='/data2/mineral_competition/zekun_models/test/')
+    parser.add_argument('--input_symbol_dir', type=str, default = '/data2/mineral_competition/data_test/TestLabels')
+    parser.add_argument('--input_img_dir', type=str, default = '/data2/mineral_competition/data_test/eval_data_perfomer')
+    parser.add_argument('--output_dir', type=str, default='/data2/mineral_competition/zekun_test/dnn/')
     
     # parser.add_argument('--label_key_name', type=str, default=None) # button, plus
 

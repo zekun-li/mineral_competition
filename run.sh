@@ -19,10 +19,34 @@
 # python3 test_dnn.py --key='quarry_open_pit' --checkpoint_dir='/data2/mineral_competition/zekun_models/1109/' --output_dir='/data2/mineral_competition/zekun_outputs_1109_low'
 # python3 test_dnn.py --key='sleeping_y' --checkpoint_dir='/data2/mineral_competition/zekun_models/1109/' --output_dir='/data2/mineral_competition/zekun_outputs_1109_low'
 
-python3 train_points.py --label_key_name='sleeping_y' --rot_aug --model_size='large' --batch_size=32 # 224/238
+python3 train_points.py --label_key_name='sleeping_y' --rot_aug --model_size='large' --batch_size=32 # 224
+
 python3 train_points.py --label_key_name='fault_line_triangle_num' --rot_aug --model_size='small' --batch_size=32  # 185
 python3 train_points.py --label_key_name='line_diamond_center_solid' --rot_aug --model_size='small' --batch_size=32  # 194
-python3 train_points.py --label_key_name='small_inclined_fault_num' --rot_aug --model_size='small' --batch_size=32 #195
+python3 train_points.py --label_key_name='small_inclined_fault_num' --rot_aug --model_size='large' --batch_size=16 #238
+python3 train_points.py --label_key_name='quarry_open_pit' --model_size='large' --batch_size=32 #195
 
+python3 train_points.py  --label_key_name='asterix' --model_size='large' --batch_size=32 #238
+python3 train_points.py  --label_key_name='purple_arrow_kite' --model_size='large' --batch_size=32 #185
+python3 train_points.py  --label_key_name='line_diamond_center_solid' --model_size='large' --batch_size=32 --rot_aug # 194
+
+
+
+python3 test_dnn.py --key='quarry_open_pit' --checkpoint_dir='/data2/mineral_competition/zekun_models/checkpoints/' --output_dir='/data2/mineral_competition/zekun_outputs_1111'
+python3 test_dnn.py --key='sleeping_y' --checkpoint_dir='/data2/mineral_competition/zekun_models/checkpoints/' --output_dir='/data2/mineral_competition/zekun_outputs_1111'
+
+
+# final test
+python3 test_dnn.py --key='x' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
+python3 test_dnn.py --key='triangular_matrix' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
+python3 test_dnn.py --key='triangle' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
+python3 test_dnn.py --key='button' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
+python3 test_dnn.py --key='crossed_downward_arrows' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
+
+python3 test_dnn.py --key='dot' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
+python3 test_dnn.py --key='quarry_open_pit' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
+python3 test_dnn.py --key='sleeping_y' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
+python3 test_dnn.py --key='purple_arrow_kite' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
+python3 test_dnn.py --key='line_diamond_center_solid' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
 
 

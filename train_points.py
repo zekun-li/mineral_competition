@@ -97,6 +97,14 @@ def train(args):
         net = Net128()
     else:
         raise NotImplementedError
+
+    if args.label_key_name == 'sleeping_y':
+        net.load_state_dict(torch.load('/data2/mineral_competition/zekun_models/checkpoints/model_sleeping_y_best.pth'))
+        print('model loaded from checkpoint')
+    elif args.label_key_name == 'quarry_open_pit':
+        net.load_state_dict(torch.load('/data2/mineral_competition/zekun_models/checkpoints/model_quarry_open_pit_best.pth'))
+        print('model loaded from checkpoint')
+
     net.to(device)
 
     criterion = nn.CrossEntropyLoss()
@@ -139,7 +147,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--img_json_dir', type=str, default='/data2/mineral_competition/data/train_input')
     parser.add_argument('--gt_dir', type=str, default='/data2/mineral_competition/data/train_output')
-    parser.add_argument('--label_map_json', type=str, default='../data/pointsymbols.json')
+    parser.add_argument('--label_map_json', type=str, default='../data/pointsymbols_optimize.json')
     parser.add_argument('--checkpoint_dir', type=str, default = '/data2/mineral_competition/zekun_models/checkpoints/')
     parser.add_argument('--label_key_name', type=str, default=None) # button, plus
     parser.add_argument('--batch_size', type=int, default=16) # button, plus

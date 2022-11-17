@@ -6,27 +6,24 @@ import numpy as np
 from matplotlib import pyplot as plt
 import cv2
 from statistics import mode
-from test import write_output, write_to_tif
-from const import *
+from test_dnn import write_output, write_to_tif
+from const_test import *
 
-IF_DEBUG = True
+IF_DEBUG = False
 
-point_validation_folder = '/home/zekun/mineral_competition/data/validation_point'
-input_img_dir = '/data2/mineral_competition/data/validation/'
-out_dir = '/data2/mineral_competition/zekun_outputs1_visualize/'
+point_validation_folder = '/data2/mineral_competition/data_test/TestLabels'
+input_img_dir = '/data2/mineral_competition/data_test/eval_data_perfomer'
+if IF_DEBUG:
+    out_dir = '/data2/mineral_competition/zekun_test/color_visualize'
+else:
+    out_dir = '/data2/mineral_competition/zekun_test/color'
 
 standard_h = standard_w = 100
-
-# color_indices = [0,1,2,3,4,5,10,25, 33,77,78,79,80,
-#                  81,82,83,84,85,86,87,88,89,90,91,92,93,94,
-#                  95,96,97,98,99,100,101,102,103,104,105,106,
-#                  118,179,180,181,182,183,186,187,188,189,190,
-#                 ]
 
 
 
 def get_files_in_folder(point_folder):
-    img_path_list = glob.glob(point_folder + '/*.jpeg')
+    img_path_list = glob.glob(point_folder + '/*_pt.jpeg')
     img_path_list = sorted(img_path_list)
     return img_path_list
 
@@ -34,7 +31,7 @@ def read_images(img_path_list):
     img_list = []
     for img_path in img_path_list:
         img = cv2.imread(img_path)
-        # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (standard_w, standard_h))
         img_list.append(img)
         
@@ -44,8 +41,11 @@ def find_foreground1(img):
     th = cv2.adaptiveThreshold(cv2.cvtColor(img,cv2.COLOR_BGR2GRAY),255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
             cv2.THRESH_BINARY,101,2)
     foreground_mask = np.bitwise_not(th)
+    
+    kernel = np.ones((5,5),np.uint8)
+    foreground_mask = cv2.erode(foreground_mask,kernel,iterations = 1)
+    
     return foreground_mask
-
 
 
 def highlight_block(start_h, end_h, start_w, end_w, img, fill_value = 255):
