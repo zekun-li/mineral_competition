@@ -16,6 +16,7 @@ Point feature detection is performed with an assembly of three models: 1) color 
 ## Code Structure
 
     .
+    ├── Presentation1.pdf                # Slides to describe the method
     ├── apply_mask.py                    # Apply the map content mask on the predictions to generate final output
     ├── const_test.py                    # Some constant variables for test data 
     ├── const_val.py                     # Some constant variables for validation data
