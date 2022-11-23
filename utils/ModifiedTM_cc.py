@@ -187,21 +187,23 @@ def modifiedMatchTemplate(rgbimage, rgbtemplate, method, matched_thresh, rgbdiff
         points_list = lone_points_list
     else:
         points_list = all_points
-    color_filtered_list = []
-    template_channels = cv2.mean(rgbtemplate)
-    template_channels = np.array([template_channels[0], template_channels[1], template_channels[2]])
-    for point_info in points_list:
-        point = point_info[0]
-        cropped_img = rgbimage[point[1]:point[1]+height, point[0]:point[0]+width]
-        cropped_channels = cv2.mean(cropped_img)
-        cropped_channels = np.array([cropped_channels[0], cropped_channels[1], cropped_channels[2]])
-        diff_observation = cropped_channels - template_channels
-        total_diff = np.sum(np.absolute(diff_observation))
-        print(total_diff)
-        if total_diff < rgbdiff_thresh:
-            color_filtered_list.append([point_info[0],point_info[1],point_info[2]])
-    print(color_filtered_list)
-    return color_filtered_list
+        
+    return points_list 
+    # color_filtered_list = []
+    # template_channels = cv2.mean(rgbtemplate)
+    # template_channels = np.array([template_channels[0], template_channels[1], template_channels[2]])
+    # for point_info in points_list:
+    #     point = point_info[0]
+    #     cropped_img = rgbimage[point[1]:point[1]+height, point[0]:point[0]+width]
+    #     cropped_channels = cv2.mean(cropped_img)
+    #     cropped_channels = np.array([cropped_channels[0], cropped_channels[1], cropped_channels[2]])
+    #     diff_observation = cropped_channels - template_channels
+    #     total_diff = np.sum(np.absolute(diff_observation))
+    #     print(total_diff)
+    #     if total_diff < rgbdiff_thresh:
+    #         color_filtered_list.append([point_info[0],point_info[1],point_info[2]])
+    # print(color_filtered_list)
+    # return color_filtered_list
 
 
 def main():

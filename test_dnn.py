@@ -82,7 +82,7 @@ def highlight_block(start_h, end_h, start_w, end_w, img, fill_value = 255):
     return img
 
 def get_files_in_folder(point_folder):
-    img_path_list = glob.glob(point_folder + '/*_pt.jpeg')
+    img_path_list = glob.glob(point_folder + '/*_point.jpeg')
     img_path_list = sorted(img_path_list)
     return img_path_list
 
@@ -160,7 +160,6 @@ def main():
 
         
     
-
         # img_path = '/data2/mineral_competition/data/validation/' + legend_path_dict[key][img_id].split('_label_')[0]+'.tif'
         img=cv2.imread(img_path)
         img=cv2.cvtColor(img, cv2.COLOR_BGR2RGB)

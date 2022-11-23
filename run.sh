@@ -49,4 +49,7 @@ python3 test_dnn.py --key='sleeping_y' --checkpoint_dir='/data2/mineral_competit
 python3 test_dnn.py --key='purple_arrow_kite' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
 python3 test_dnn.py --key='line_diamond_center_solid' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/dnn'
 
+python3 test_dnn.py --key='small_inclined_fault_num' --checkpoint_dir='/data2/mineral_competition/zekun_models/test/' --output_dir='/data2/mineral_competition/zekun_test/add'
 
+
+# python3 train_points.py --label_key_name='small_inclined_fault_num' --rot_aug --model_size='large' --batch_size=16 #238

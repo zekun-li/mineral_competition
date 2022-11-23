@@ -4,18 +4,19 @@ index_list_dict = {
       'triangle' : [62], 
       'button': [ 29],
       'crossed_downward_arrows' : [4,10,15,], 
-      'dot':[9, 21, 42,55, 56, 59, 61, 63], 
+      'dot':[9, 21, 42,55, 56, 59, 63], 
       'barbeque_tofu':[],
 
       'quarry_open_pit' : [3, 14],
       'sleeping_y':[2,7,13, 20,], # --------
 
       'reverse_p_num':[49],
-      'small_inclined_fault_num':[ 28, 48 ],
+      # 'small_inclined_fault_num':[ 28, 48 ],
+      'small_inclined_fault_num':[ 0, 1,2 ],
       'plus':[50], # no so good
       'line_diamond_center_solid':[46],
       'fault_line_triangle_num':[44],
-      'purple_arrow_kite':[22],
+      #'purple_arrow_kite':[22],
       'asterix':[23]
 }
 
