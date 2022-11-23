@@ -2,6 +2,8 @@
 
 This repo provides the code for `isi-umn` team in the [DARPA Mineral Competition](https://criticalminerals.darpa.mil/Leaderboard) 
 
+`Presentation1.pdf` contains slides describing the method. (Note: Github preview only loads the first few pages)
+
 Trained DNN Models can be downloaded from this [Google Drive link](https://drive.google.com/drive/folders/1p86MHh_L3xilZNMw7jclt6Qpx_FCo4-n?usp=sharing)
 
 ## Overview: 
