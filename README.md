@@ -26,10 +26,14 @@ Point feature detection is performed with an assembly of three models: 1) color 
     ├── models.py                        # For DNN model: constructs the model
     ├── run.sh                           # For DNN model: some sample scripts to train and test the DNN model
     ├── test_color.py                    # Testing code for color-based matching
-    ├── test_dnn.sh                      # Testing code for DNN model
+    ├── test_dnn.py                      # Testing code for DNN model
     ├── test_template.py                 # Testing code for template matching
     ├── train_points.py                  # Training code for DNN model
     └── README.md
-    
+
+
+## Inference 
+
+The three files used for inference are: `test_color.py`, `test_dnn.py`, `test_template.py`. The general rule is, if there exists a pretrained DNN weight file in the [Google Drive link](https://drive.google.com/drive/folders/1p86MHh_L3xilZNMw7jclt6Qpx_FCo4-n?usp=sharing), then use `test_dnn.py` would give the best performance. Otherwise, if the legend symbol is colored (i.e., not black-white), then use `test_color.py`. For other point symbols, use `test_template.py` 
     
 ##  
