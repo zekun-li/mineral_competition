@@ -203,7 +203,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--key', type=str, default='dot')
     parser.add_argument('--checkpoint_dir', type=str, default='/data2/mineral_competition/zekun_models/test/')
-    parser.add_argument('--input_symbol_dir', type=str, default = '/data2/mineral_competition/data_test/TestLabels')
+    parser.add_argument('--input_symbol_dir', type=str, default = '/data2/mineral_competition/data_test/TestLabels') # A folder contains cropped out symbol patch from legend. Naming convention: [mapname]_label_[labelname]_[featuretype].jpeg. Example: AZ_Fredonia_label_collapse_structure_pt.jpeg
     parser.add_argument('--input_img_dir', type=str, default = '/data2/mineral_competition/data_test/eval_data_perfomer')
     parser.add_argument('--output_dir', type=str, default='/data2/mineral_competition/zekun_test/dnn/')
     
