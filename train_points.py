@@ -145,8 +145,15 @@ def train(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--img_json_dir', type=str, default='/data2/mineral_competition/data/train_input')
+    parser.add_argument('--img_json_dir', type=str, default='/data2/mineral_competition/data/train_input') 
+    # `train_input` folder contains paired input tif file and input json file that marks the symbol bbox in legend area (i.e.,swatch)  
+    # WI_Wyeville_503636_1958_48000_geo_mosaic.json
+    # WI_Wyeville_503636_1958_48000_geo_mosaic.tif
     parser.add_argument('--gt_dir', type=str, default='/data2/mineral_competition/data/train_output')
+    # `train_output` folder contains ground-truth tif file that marks the occurences of point symbol in map area.
+    # e.g., WI_WisconsinRapids_503634_1957_48000_geo_mosaic_1_pt.tif
+    # WI_WisconsinRapids_503634_1957_48000_geo_mosaic_5_pt.tif
+    # WI_Wyeville_503636_1958_48000_geo_mosaic_1_pt.tif
     parser.add_argument('--label_map_json', type=str, default='../data/pointsymbols_optimize.json')
     parser.add_argument('--checkpoint_dir', type=str, default = '/data2/mineral_competition/zekun_models/checkpoints/')
     parser.add_argument('--label_key_name', type=str, default=None) # button, plus
