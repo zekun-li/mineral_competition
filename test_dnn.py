@@ -82,7 +82,7 @@ def highlight_block(start_h, end_h, start_w, end_w, img, fill_value = 255):
     return img
 
 def get_files_in_folder(point_folder):
-    img_path_list = glob.glob(point_folder + '/*_point.jpeg')
+    img_path_list = glob.glob(point_folder + '/*_pt.jpeg')
     img_path_list = sorted(img_path_list)
     return img_path_list
 
